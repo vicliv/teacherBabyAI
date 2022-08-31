@@ -13,7 +13,7 @@ class RandomTeacher():
 
         self.random_task_generator = Box(np.array(mins), np.array(maxs), dtype=np.int64)
 
-    def update(self, task, competence):
+    def update(self, logs):
         pass
 
     def sample_task(self):
@@ -93,7 +93,3 @@ class RandomTeacher():
         v2 = Box(np.array(mins), np.array(maxs), dtype=np.int64)
         
         return np.concatenate([v1, v2.sample()])
-   
-
-    def dump(self, dump_dict):
-        return dump_dict
