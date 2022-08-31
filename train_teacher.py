@@ -27,6 +27,7 @@ from babyai.utils.agent import ModelAgent
 from gym_minigrid.wrappers import RGBImgPartialObsWrapper
 
 from teachers.random_teacher import RandomTeacher
+from teachers.red_ball_teacher import RedBallTeacher
 from levels import *
 
 
@@ -53,9 +54,7 @@ parser.add_argument("--save-interval", type=int, default=50,
 args = parser.parse_args()
 
 min_vector = [1, 1, 6]
-max_vector = [3, 3, 8]
-
-teacher = RandomTeacher(min_vector, max_vector)
+max_vector = [1, 1, 8]
 
 if __name__ == "__main__":
     utils.seed(args.seed)
@@ -63,7 +62,7 @@ if __name__ == "__main__":
     # Generate environments
     use_pixel = 'pixel' in args.arch
     
-    teacher = RandomTeacher(min_vector, max_vector)
+    teacher = RedBallTeacher()
 
     env_fns = []
     for i in range(args.procs):
@@ -202,7 +201,9 @@ if __name__ == "__main__":
         update_start_time = time.time()
         logs = algo.update_parameters()
         update_end_time = time.time()
-
+        
+        teacher.update(logs)
+       
         status['num_frames'] += logs["num_frames"]
         status['num_episodes'] += logs['episodes_done']
         status['i'] += 1
